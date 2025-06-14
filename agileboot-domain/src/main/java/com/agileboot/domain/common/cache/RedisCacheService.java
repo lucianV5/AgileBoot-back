@@ -2,6 +2,7 @@ package com.agileboot.domain.common.cache;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.agileboot.domain.system.dept.db.SysDeptEntity;
+import com.agileboot.domain.system.dept.db.SysDeptService;
 import com.agileboot.infrastructure.cache.RedisUtil;
 import com.agileboot.infrastructure.cache.redis.CacheKeyEnum;
 import com.agileboot.infrastructure.cache.redis.RedisCacheTemplate;
@@ -75,6 +76,13 @@ public class RedisCacheService {
                 return postService.getById((Serializable) id);
             }
 
+        };
+        deptCache = new RedisCacheTemplate<SysDeptEntity>(redisUtil,CacheKeyEnum.DEPT_ENTITY_KEY){
+            @Override
+            public SysDeptEntity getObjectFromDb(Object id) {
+                SysDeptService deptService = SpringUtil.getBean(SysDeptService.class);
+                return  deptService.getById((Serializable) id);
+            }
         };
 
 
